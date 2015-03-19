@@ -61,7 +61,6 @@ namespace Pixelbyte
             try
             {
                 List<T> l = new List<T>(array.Length);
-                T[] newArray = new T[array.Length];
 
                 if (l is List<string>)
                 {
@@ -90,6 +89,45 @@ namespace Pixelbyte
                 return l.ToArray();
             }
             catch (Exception) { return null; } //for now we just eat the exception
+        }
+
+        public static string GetS(this Dictionary<string, object> dict, string key, string defVal = null)
+        {
+            if (!dict.ContainsKey(key)) return defVal;
+            else return dict[key].ToString();
+        }
+
+        public static float GetF(this Dictionary<string, object> dict, string key, float defVal = float.NaN)
+        {
+            if (!dict.ContainsKey(key)) return defVal;
+            else
+            {
+                float val;
+                if (!float.TryParse(dict[key].ToString(), out val)) return defVal;
+                else return val;
+            }
+        }
+
+        public static int GetI(this Dictionary<string, object> dict, string key, int defVal = int.MinValue)
+        {
+            if (!dict.ContainsKey(key)) return defVal;
+            else
+            {
+                int val;
+                if (!int.TryParse(dict[key].ToString(), out val)) return defVal;
+                else return val;
+            }
+        }
+
+        public static bool GetB(this Dictionary<string, object> dict, string key, bool defVal = false)
+        {
+            if (!dict.ContainsKey(key)) return defVal;
+            else
+            {
+                bool val;
+                if (!bool.TryParse(dict[key].ToString(), out val)) return defVal;
+                else return val;
+            }
         }
     }
 
@@ -163,19 +201,17 @@ namespace Pixelbyte
         }
 
         /// <summary>
-        /// Gets the specific indexed item in the array as a string
-        /// Note: 
-        /// 1) Assumes the deserialized data is store din the array field
-        /// 2)  there are no Objects in the array if there are, well this wont work
+        /// Gets the specified indexed item in the array and assumes it is
+        /// itself a json object of the form Dictionary<string, object>
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string this[int index]
+        public Dictionary<string, object> this[int index]
         {
             get
             {
                 if (array == null || index >= array.Length) return null;
-                else return array[index].ToString();
+                else return array[index] as Dictionary<string, object>;
             }
         }
 
@@ -240,6 +276,20 @@ namespace Pixelbyte
                 return l.ToArray();
             }
             catch (Exception) { return null; } //for now we just eat the exception
+        }
+
+        /// <summary>
+        /// Gets the specific indexed item in the array as a string
+        /// Note: 
+        /// 1) Assumes the deserialized data is stored in the array field
+        /// 2)  there are no Objects in the array if there are, well this wont work
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string StringFromArray(int index)
+        {
+            if (array == null || index >= array.Length) return null;
+            else return array[index].ToString();
         }
 
         Token NextToken

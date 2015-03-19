@@ -180,9 +180,9 @@ bye", pair.Key);
 
             Assert.IsNull(p.table);
 
-            Assert.IsInstanceOfType(p[0], typeof(string));
+            Assert.IsInstanceOfType(p.StringFromArray(0), typeof(string));
 
-            Assert.AreEqual(20000, (p[0]).Length);
+            Assert.AreEqual(20000, (p.StringFromArray(0)).Length);
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ bye", pair.Key);
 
             Assert.AreEqual(2, p.array.Length);
 
-            Assert.AreEqual("<", p[0]);
+            Assert.AreEqual("<", p.StringFromArray(0));
             //Assert.AreEqual("24352", Convert.ToInt32(Convert.ToChar(l[0])));
         }
 
@@ -294,7 +294,25 @@ bye", pair.Key);
             Assert.AreEqual(new Uri("https://github.com/shiftkey/simple-json/issues/1"), p["url"]);
         }
 
+        [TestMethod]
+        public void RootWithArray()
+        {
+            var json = "[45,56,787,3]";
+            var p = PixelJSON.LoadString(json);
 
+            Assert.AreEqual("56", p.array[1]);
+            Assert.AreEqual("787", p.array[2]);
+        }
+
+        [TestMethod]
+        public void RootWithArrayofObjects()
+        {
+            var json = "[{\"cans\":10},{\"gum\":bubble}]";
+            var p = PixelJSON.LoadString(json);
+
+            Assert.AreEqual("10", p[0, "cans"]);
+            Assert.AreEqual("bubble", p[1, "gum"]);
+        }
     }
 
     [TestClass]
