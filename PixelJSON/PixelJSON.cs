@@ -5,7 +5,7 @@ using System.Text;
 using System.Linq;
 
 // My JSON Parser
-//
+// 
 // 2015 Pixelbyte Studios
 /*
  * Based on MiniJSON.cs by Calvin Rien | https://gist.github.com/darktable/1411710
@@ -139,7 +139,7 @@ namespace Pixelbyte
 
         TextReader _reader;
 
-        //The root JsonValue
+        //The root JsonValue 
         public Dictionary<string, object> table;
         public object[] array;
 
@@ -280,7 +280,7 @@ namespace Pixelbyte
 
         /// <summary>
         /// Gets the specific indexed item in the array as a string
-        /// Note:
+        /// Note: 
         /// 1) Assumes the deserialized data is stored in the array field
         /// 2)  there are no Objects in the array if there are, well this wont work
         /// </summary>
@@ -302,6 +302,8 @@ namespace Pixelbyte
                 else return Tokenize(PeekChar());
             }
         }
+
+        private PixelJSON() { }
 
         public static PixelJSON LoadString(string data)
         {
