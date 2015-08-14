@@ -34,14 +34,14 @@ namespace JSONerTests
             Assert.AreEqual(2, ((object[])p.table["Drives"]).Length);
 
             //Check data
-            Assert.AreEqual("DVD read/writer", p["Drives",0]);
+            Assert.AreEqual("DVD read/writer", p["Drives", 0]);
             Assert.AreEqual("500 gigabyte hard drive", p["Drives", 1]);
         }
 
         [TestMethod]
         public void NestedObjects()
         {
-string input = @"{
+            string input = @"{
   ""CPU"": ""Intel"",
   ""Drives"": [
     ""DVD read/writer"",
@@ -50,7 +50,7 @@ string input = @"{
    ""Old"" : {""Bat"" : ""Masterson""}
 }";
             var p = PixelJSON.LoadString(input);
-            Assert.AreEqual("Masterson", p["Old","Bat"]);
+            Assert.AreEqual("Masterson", p["Old", "Bat"]);
         }
 
         [TestMethod]
@@ -345,4 +345,26 @@ bye", pair.Key);
             Assert.IsNull(b);
         }
     }
+
+//    [TestClass]
+//    public class PixelJSONSerializerTest
+//    {
+//        [TestMethod]
+//        public void TestSerialize()
+//        {
+//            string input = @"{
+//  ""CPU"": ""Intel"",
+//  ""Drives"": [ 
+//    ""DVD read/writer"",
+//    ""500 gigabyte hard drive""
+//  ]
+//}" + '\n';
+
+//            var p = PixelJSON.LoadString(input);
+
+//            string st = PixelJSONSerializer.Serialize(p);
+//            Console.WriteLine(st);
+//        }
+
+//    }
 }

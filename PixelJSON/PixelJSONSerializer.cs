@@ -40,27 +40,27 @@ namespace Pixelbyte
         bool multiline = true;
         bool multilineArrays = false;
 
-        PixelJSONSerializer()
+        public PixelJSONSerializer(bool multiline = true, bool multilineArrays = false)
         {
             builder = new StringBuilder();
+            level = 0;
+            this.multiline = multiline;
+            this.multilineArrays = multilineArrays;
         }
 
         public static string Serialize(PixelJSON json, bool multiline = true, bool multilineArrays = false)
         {
-            var instance = new PixelJSONSerializer();
-            instance.level = 0;
-            instance.multiline = multiline;
-            instance.multilineArrays = multilineArrays;
+            var instance = new PixelJSONSerializer(multiline, multilineArrays);
 
             if (json.table != null)
-                instance.SerializeObject(json.table, multiline);
+                instance.SerializeObject(json.table);
             else if (json.array != null)
-                instance.SerializeArray(json.array, instance.multilineArrays);
+                instance.SerializeArray(json.array);
 
             return instance.builder.ToString();
         }
 
-        bool IsNumber(string text)
+        static bool IsNumber(string text)
         {
             for (int i = 0; i < text.Length; i++)
             {
@@ -88,11 +88,11 @@ namespace Pixelbyte
             }
             else if (value as IDictionary != null)
             {
-                SerializeObject(value as IDictionary, multiline);
+                SerializeObject(value as IDictionary);
             }
             else if (value as IList != null)
             {
-                SerializeArray(value as IList, multilineArrays);
+                SerializeArray(value as IList);
             }
             else if (value is char)
             {
@@ -104,28 +104,32 @@ namespace Pixelbyte
             }
         }
 
-        void SerializeObject(IDictionary obj, bool multiLine)
+        void SerializeObject(IDictionary obj)
         {
             bool first = true;
 
             level++;
+
             builder.Append('{');
+
+            if (obj.Keys.Count > 1)
+            {
+                builder.AppendLine();
+                builder.Append('\t', level);
+            }
+
 
             foreach (object e in obj.Keys)
             {
                 if (!first)
                 {
                     builder.Append(',');
-                }
-
-                if (multiLine)
-                {
                     builder.Append('\n');
                     builder.Append('\t', level);
                 }
 
                 SerializeString(e.ToString());
-                builder.Append(':');
+                builder.Append(" : ");
 
                 SerializeValue(obj[e]);
 
@@ -134,7 +138,7 @@ namespace Pixelbyte
 
             level--;
 
-            if (!first && multiLine)
+            if (!first && multiline && obj.Keys.Count > 1)
             {
                 builder.Append('\n');
                 builder.Append('\t', level);
@@ -142,9 +146,17 @@ namespace Pixelbyte
             builder.Append('}');
         }
 
-        void SerializeArray(IList anArray, bool multiLine)
+        void SerializeArray(IList anArray)
         {
             level++;
+
+            if (anArray.Count > 1)
+            {
+                builder.AppendLine();
+
+                if (level - 1 > 0)
+                    builder.Append('\t', level - 1);
+            }
             builder.Append('[');
 
             bool first = true;
@@ -156,7 +168,7 @@ namespace Pixelbyte
                     //builder.Append(',');
                     builder.Append(", ");
                 }
-                if (multiLine)
+                if (multilineArrays)
                 {
                     builder.Append('\n');
                     builder.Append('\t', level);
@@ -169,7 +181,7 @@ namespace Pixelbyte
 
             level--;
 
-            if (!first && multiLine)
+            if (!first && multilineArrays && anArray.Count > 1)
             {
                 builder.Append('\n');
                 builder.Append('\t', level);

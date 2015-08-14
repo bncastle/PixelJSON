@@ -16,7 +16,7 @@ namespace ConsoleApplication1
             //var p = PJSON.LoadString("[{\"firstName\":\"John\", \"lastName\":\"Doe\"},{\"firstName\":\"Anna\", \"lastName\":\"Smith\"},{\"firstName\":\"Peter\",\"lastName\":\"Jones\"}]");
             //var p = PJSON.LoadString("[45,67,34,21,32,1]");
 
-            var p = PixelJSON.Load(@"F:\untitled.json");
+            //var p = PixelJSON.Load(@"F:\untitled.json");
             //string json = @"{ ""t"" : ""'h\u006""}";
             //string json = @"{ ""A"" : true,""B"" ""hello"", // Notice the colon is missing""C"" : ""bye""}";
             //string json = "[1";
@@ -28,6 +28,10 @@ namespace ConsoleApplication1
   ],
    ""Old"" : {""Bat"" : ""Masterson""}
 }";
+            var p = PixelJSON.LoadString(json);
+
+            var str = PixelJSONSerializer.Serialize(p, true, false);
+            Console.WriteLine(str);
             //var p = JSONer.LoadString(@"{""t"" : ""'h\""}");
             //var p = JSON.LoadString(@"{aww");
             //string json = @"[""\u003c"",""\u5f20""]";
