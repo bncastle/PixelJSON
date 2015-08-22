@@ -91,41 +91,75 @@ namespace Pixelbyte
             catch (Exception) { return null; } //for now we just eat the exception
         }
 
+        public static object GetO(this Dictionary<string, object> dict, string key)
+        {
+            object obj = null;
+            dict.TryGetValue(key, out obj);
+            return obj;
+        }
+
+        public static Dictionary<string, object>[] GetTables(this Dictionary<string, object> dict, string key)
+        {
+            object obj = null;
+            if (dict.TryGetValue(key, out obj))
+            {
+                List<Dictionary<string, object>> tables = new List<Dictionary<string, object>>();
+
+                var objs = obj as object[];
+                if (objs != null)
+                {
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        var table = objs[i] as Dictionary<string, object>;
+                        if (table != null)
+                            tables.Add(table);
+                    }
+                    if (tables.Count == 0) return null;
+                    return tables.ToArray();
+                }
+            }
+            return null;
+        }
+
         public static string GetS(this Dictionary<string, object> dict, string key, string defVal = null)
         {
-            if (!dict.ContainsKey(key)) return defVal;
-            else return dict[key].ToString();
+            object obj = null;
+            if (!dict.TryGetValue(key, out obj)) return defVal;
+            else return obj.ToString();
         }
 
         public static float GetF(this Dictionary<string, object> dict, string key, float defVal = float.NaN)
         {
-            if (!dict.ContainsKey(key)) return defVal;
+            object obj = null;
+            if (!dict.TryGetValue(key, out obj)) return defVal;
             else
             {
                 float val;
-                if (!float.TryParse(dict[key].ToString(), out val)) return defVal;
+                if (!float.TryParse(obj.ToString(), out val)) return defVal;
                 else return val;
             }
         }
 
         public static int GetI(this Dictionary<string, object> dict, string key, int defVal = int.MinValue)
         {
-            if (!dict.ContainsKey(key)) return defVal;
+            object obj = null;
+            if (!dict.TryGetValue(key, out obj)) return defVal;
             else
             {
                 int val;
-                if (!int.TryParse(dict[key].ToString(), out val)) return defVal;
+                if (!int.TryParse(obj.ToString(), out val)) return defVal;
                 else return val;
             }
         }
 
         public static bool GetB(this Dictionary<string, object> dict, string key, bool defVal = false)
         {
-            if (!dict.ContainsKey(key)) return defVal;
+            object obj = null;
+            if (!dict.TryGetValue(key, out obj)) return defVal;
             else
             {
                 bool val;
-                if (!bool.TryParse(dict[key].ToString(), out val)) return defVal;
+                if (!bool.TryParse(obj.ToString(), out val)) return defVal;
                 else return val;
             }
         }
@@ -174,6 +208,47 @@ namespace Pixelbyte
                     return tble[keys[i]].ToString();
             }
             return null;
+        }
+
+        public Dictionary<string, object> GetTable(string key)
+        {
+            Object obj;
+            if (table.TryGetValue(key, out obj))
+            {
+                var d = obj as Dictionary<string, object>;
+                return d;
+            }
+            else
+                return null;
+        }
+
+        public Dictionary<string, object>[] GetTables(string key)
+        {
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            Object obj;
+            if (table.TryGetValue(key, out obj))
+            {
+                var d = obj as Dictionary<string, object>;
+                if (d == null)
+                {
+                    var arr = obj as object[];
+                    if (arr == null) return null;
+
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        d = arr[i] as Dictionary<string, object>;
+                        if (d != null)
+                            list.Add(d);
+                    }
+                }
+                else
+                    list.Add(d);
+
+                if (list.Count > 0) return list.ToArray();
+                else return null;
+            }
+            else
+                return null;
         }
 
         /// <summary>
