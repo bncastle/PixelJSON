@@ -7,7 +7,7 @@
     <ProjectGuid>{D8C79DB3-B295-437C-B6E3-B090120F1D0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pixelbyte</RootNamespace>
+    <RootNamespace>Pixelbyte.IO</RootNamespace>
     <AssemblyName>PixelJSON</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
