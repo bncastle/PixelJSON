@@ -38,8 +38,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PixelJSON.cs" />
-    <Compile Include="PixelJSONSerializer.cs" />
+    <Compile Include="src\PixelJSON.cs" />
+    <Compile Include="src\PixelJSONSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
