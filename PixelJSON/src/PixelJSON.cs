@@ -123,15 +123,13 @@ namespace Pixelbyte.IO
 
         public static string GetS(this Dictionary<string, object> dict, string key, string defVal = null)
         {
-            object obj = null;
-            if (!dict.TryGetValue(key, out obj)) return defVal;
+            if (!dict.TryGetValue(key, out object obj)) return defVal;
             else return obj.ToString();
         }
 
         public static float GetF(this Dictionary<string, object> dict, string key, float defVal = float.NaN)
         {
-            object obj = null;
-            if (!dict.TryGetValue(key, out obj)) return defVal;
+            if (!dict.TryGetValue(key, out object obj)) return defVal;
             else
             {
                 float val;
@@ -142,8 +140,7 @@ namespace Pixelbyte.IO
 
         public static int GetI(this Dictionary<string, object> dict, string key, int defVal = int.MinValue)
         {
-            object obj = null;
-            if (!dict.TryGetValue(key, out obj)) return defVal;
+            if (!dict.TryGetValue(key, out object obj)) return defVal;
             else
             {
                 int val;
@@ -154,8 +151,7 @@ namespace Pixelbyte.IO
 
         public static bool GetB(this Dictionary<string, object> dict, string key, bool defVal = false)
         {
-            object obj = null;
-            if (!dict.TryGetValue(key, out obj)) return defVal;
+            if (!dict.TryGetValue(key, out object obj)) return defVal;
             else
             {
                 bool val;
@@ -183,10 +179,10 @@ namespace Pixelbyte.IO
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string this[string key] { get { return GetValue(key); } }
-        public string this[string key, string key2] { get { return GetValue(key, key2); } }
-        public string this[string key, string key2, string key3] { get { return GetValue(key, key2, key3); } }
-        public string this[string key, string key2, string key3, string key4] { get { return GetValue(key, key2, key3, key4); } }
+        public string this[string key] => GetValue(key); 
+        public string this[string key, string key2] => GetValue(key, key2);
+        public string this[string key, string key2, string key3] => GetValue(key, key2, key3);
+        public string this[string key, string key2, string key3, string key4] => GetValue(key, key2, key3, key4);
 
         /// <summary>
         /// Given any number of keys, this gets the corresponding value as a
@@ -212,8 +208,7 @@ namespace Pixelbyte.IO
 
         public Dictionary<string, object> GetTable(string key)
         {
-            Object obj;
-            if (table.TryGetValue(key, out obj))
+            if (table.TryGetValue(key, out object obj))
             {
                 var d = obj as Dictionary<string, object>;
                 return d;
@@ -225,8 +220,7 @@ namespace Pixelbyte.IO
         public Dictionary<string, object>[] GetTables(string key)
         {
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
-            Object obj;
-            if (table.TryGetValue(key, out obj))
+            if (table.TryGetValue(key, out object obj))
             {
                 var d = obj as Dictionary<string, object>;
                 if (d == null)
@@ -262,14 +256,14 @@ namespace Pixelbyte.IO
             get
             {
                 if (table == null || !table.ContainsKey(key)) return null;
-                var anArray = table[key] as object[];
+                object[] anArray = table[key] as object[];
                 if (anArray == null || anArray.Length <= index) return null;
                 else return anArray[index].ToString();
             }
             set
             {
                 if (table == null || !table.ContainsKey(key)) return;
-                var anArray = table[key] as object[];
+                object[] anArray = table[key] as object[];
                 if (anArray == null || anArray.Length <= index) return;
                 else anArray[index] = value;
             }
